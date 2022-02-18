@@ -65,6 +65,7 @@ class _SingInState extends State<SingIn> {
                     height: 16,
                   ),
                   TextFormField(
+                    keyboardType: TextInputType.emailAddress,
                     decoration: textInputDecoration.copyWith(hintText: 'Email'),
                     validator: (value) =>
                         value!.isEmpty ? 'Enter an email' : null,

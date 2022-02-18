@@ -68,6 +68,7 @@ class _RegisterState extends State<Register> {
                     height: 16,
                   ),
                   TextFormField(
+                    keyboardType: TextInputType.emailAddress,
                     decoration: textInputDecoration.copyWith(hintText: 'Email'),
                     validator: (value) =>
                         value!.isEmpty ? 'Enter an email' : null,

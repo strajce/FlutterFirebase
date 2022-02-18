@@ -1,8 +1,8 @@
+import 'package:firebase_basic_example/services/auth.dart';
+import 'package:firebase_basic_example/shared/constants.dart';
+import 'package:firebase_basic_example/shared/loading.dart';
+import 'package:firebase_basic_example/shared/string_extension.dart';
 import 'package:flutter/material.dart';
-
-import '../../services/auth.dart';
-import '../../shared/constants.dart';
-import '../../shared/loading.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -15,14 +15,15 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
-  String email = '';
-  String password = '';
-  String error = '';
-  bool loading = false;
+  String _email = '';
+  String _name = '';
+  String _password = '';
+  String _error = '';
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
-    return loading
+    return _loading
         ? const Loading()
         : Scaffold(
             backgroundColor: Colors.brown[100],
@@ -57,25 +58,34 @@ class _RegisterState extends State<Register> {
             ),
             body: Container(
               padding: const EdgeInsets.symmetric(
-                vertical: 20,
-                horizontal: 50,
+                vertical: 16,
+                horizontal: 48,
               ),
               child: Form(
                 key: _formKey,
                 child: Column(children: [
                   const SizedBox(
-                    height: 20,
+                    height: 16,
                   ),
                   TextFormField(
                     decoration: textInputDecoration.copyWith(hintText: 'Email'),
                     validator: (value) =>
                         value!.isEmpty ? 'Enter an email' : null,
                     onChanged: (value) {
-                      setState(() => email = value);
+                      setState(() => _email = value);
                     },
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 16,
+                  ),
+                  TextFormField(
+                    decoration: textInputDecoration.copyWith(hintText: 'Name'),
+                    onChanged: (value) {
+                      setState(() => _name = value.capitalize());
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16,
                   ),
                   TextFormField(
                     decoration:
@@ -85,39 +95,47 @@ class _RegisterState extends State<Register> {
                         : null,
                     obscureText: true,
                     onChanged: (value) {
-                      setState(() => password = value);
+                      setState(() => _password = value);
                     },
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 16,
                   ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.brown[400]),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 24, right: 24, bottom: 66),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.brown[400]),
+                        ),
+                        child: const Text(
+                          'Register',
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => _loading = true);
+                            dynamic result =
+                                await _authService.registerWithEmailAndPassword(
+                                    _email, _password, _name);
+                            if (result == null) {
+                              setState(() {
+                                _loading = false;
+                                _error = 'Please providi a valid email';
+                              });
+                            }
+                          }
+                        },
+                      ),
                     ),
-                    child: const Text(
-                      'Register',
-                    ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() => loading = true);
-                        dynamic result = await _authService
-                            .registerWithEmailAndPassword(email, password);
-                        if (result == null) {
-                          setState(() {
-                            loading = false;
-                            error = 'Please providi a valid email';
-                          });
-                        }
-                      }
-                    },
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 16,
                   ),
                   Text(
-                    error,
+                    _error,
                     style: const TextStyle(color: Colors.red, fontSize: 16),
                   )
                 ]),

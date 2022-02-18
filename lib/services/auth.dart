@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_basic_example/models/user_model.dart';
 import 'package:firebase_basic_example/services/firestore.dart';
+import 'dart:developer' as developer;
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -22,7 +23,7 @@ class AuthService {
       User? _user = result.user;
       return _userFromFirebaseUser(_user);
     } catch (e) {
-      // print(e.toString());
+      developer.log(e.toString());
       return null;
     }
   }
@@ -35,25 +36,25 @@ class AuthService {
       User? user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
-      // print(e.toString());
+      developer.log(e.toString());
       return null;
     }
   }
 
   // register
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(
+      String email, String password, String name) async {
     try {
       UserCredential result = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       User user = result.user!;
 
       // create a new document for the user with the uid
-      await FirestoreService(uid: user.uid)
-          .updateUserData('0', 'new crew member', 100);
+      await FirestoreService(uid: user.uid).updateUserData('0', name, 100);
 
       return _userFromFirebaseUser(user);
     } catch (e) {
-      // print(e.toString());
+      developer.log(e.toString());
       return null;
     }
   }
@@ -63,7 +64,7 @@ class AuthService {
     try {
       await _firebaseAuth.signOut();
     } catch (e) {
-      // print(e.toString());
+      developer.log(e.toString());
       return null;
     }
   }

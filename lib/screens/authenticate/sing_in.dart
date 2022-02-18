@@ -1,8 +1,7 @@
 import 'package:firebase_basic_example/services/auth.dart';
+import 'package:firebase_basic_example/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_basic_example/shared/constants.dart';
-
-import '../../shared/loading.dart';
 
 class SingIn extends StatefulWidget {
   final Function toggleView;
@@ -56,14 +55,14 @@ class _SingInState extends State<SingIn> {
             ),
             body: Container(
               padding: const EdgeInsets.symmetric(
-                vertical: 20,
-                horizontal: 50,
+                vertical: 16,
+                horizontal: 48,
               ),
               child: Form(
                 key: _formKey,
                 child: Column(children: [
                   const SizedBox(
-                    height: 20,
+                    height: 16,
                   ),
                   TextFormField(
                     decoration: textInputDecoration.copyWith(hintText: 'Email'),
@@ -74,7 +73,7 @@ class _SingInState extends State<SingIn> {
                     },
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 16,
                   ),
                   TextFormField(
                     decoration:
@@ -88,35 +87,42 @@ class _SingInState extends State<SingIn> {
                     },
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 16,
                   ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.brown[400]),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 24, right: 24, bottom: 66),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.brown[400]),
+                        ),
+                        child: const Text(
+                          'Sing in',
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => loading = true);
+                            dynamic result = await _authService
+                                .singInWithEmailAndPassword(email, password);
+                            if (result == null) {
+                              setState(
+                                () {
+                                  loading = false;
+                                  error =
+                                      'Could not sing in with those credentials';
+                                },
+                              );
+                            }
+                          }
+                        },
+                      ),
                     ),
-                    child: const Text(
-                      'Sing in',
-                    ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() => loading = true);
-                        dynamic result = await _authService
-                            .singInWithEmailAndPassword(email, password);
-                        if (result == null) {
-                          setState(
-                            () {
-                              loading = false;
-                              error =
-                                  'Could not sing in with those credentials';
-                            },
-                          );
-                        }
-                      }
-                    },
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 16,
                   ),
                   Text(
                     error,

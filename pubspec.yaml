@@ -31,6 +31,6 @@ flutter:
 
   uses-material-design: true
 
-assets:
-  - assets/coffee_bg.png
-  - assets/coffee_icon.png
+  assets:
+    - assets/coffee_bg.png
+    - assets/coffee_icon.png

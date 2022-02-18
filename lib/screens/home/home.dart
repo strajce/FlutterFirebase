@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
   final AuthService _authService = AuthService();
-  // final FirestoreService _firestoreService =
-  //     FirestoreService(uid: "8mnvlY82Gwe9vq3zId3EGDDPucF3");
   Home({Key? key}) : super(key: key);
 
   @override

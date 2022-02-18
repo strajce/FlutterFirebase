@@ -28,7 +28,6 @@ class _SettingsFormState extends State<SettingsForm> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           UserData? userData = snapshot.data;
-          // _currentStrength = userData?.strength;
           return Form(
             key: _formKey,
             child: Column(

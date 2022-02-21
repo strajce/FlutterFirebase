@@ -37,9 +37,9 @@ class Home extends StatelessWidget {
           elevation: 0,
           actions: <Widget>[
             TextButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.brown[400])),
+              // style: ButtonStyle(
+              //     backgroundColor:
+              //         MaterialStateProperty.all(Colors.brown[400])),
               onPressed: () async {
                 await _authService.singOut();
               },

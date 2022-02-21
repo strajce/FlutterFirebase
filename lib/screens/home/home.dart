@@ -36,29 +36,47 @@ class Home extends StatelessWidget {
           backgroundColor: Colors.brown[400],
           elevation: 0,
           actions: <Widget>[
-            TextButton(
-              // style: ButtonStyle(
-              //     backgroundColor:
-              //         MaterialStateProperty.all(Colors.brown[400])),
-              onPressed: () async {
-                await _authService.singOut();
-              },
-              child: const IconView(icon: Icons.person, title: 'Log out'),
-            ),
-            TextButton(
-              onPressed: () => _showSettingsPanel(),
-              child: const IconView(icon: Icons.settings, title: 'Settings'),
+            PopupMenuButton(
+              elevation: 8,
+              icon: const Icon(Icons.more_vert),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: TextButton(
+                    onPressed: () => _showSettingsPanel(),
+                    child:
+                        const IconView(icon: Icons.settings, title: 'Settings'),
+                  ),
+                  onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('settings'),
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  child: TextButton(
+                    onPressed: () async {
+                      await _authService.singOut();
+                    },
+                    child: const IconView(
+                      icon: Icons.person,
+                      title: 'Log out',
+                    ),
+                  ),
+                  value: 2,
+                ),
+              ],
             )
           ],
         ),
         body: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/coffee_bg.png'),
-                fit: BoxFit.cover,
-              ),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/coffee_bg.png'),
+              fit: BoxFit.cover,
             ),
-            child: const BrewList()),
+          ),
+          child: const BrewList(),
+        ),
       ),
     );
   }

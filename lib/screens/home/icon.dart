@@ -12,7 +12,7 @@ class IconView extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: Colors.white,
+          color: Colors.brown[400],
         ),
         const SizedBox(
           width: 8,
@@ -20,7 +20,7 @@ class IconView extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            color: Colors.white,
+            color: Colors.brown,
           ),
         ),
       ],

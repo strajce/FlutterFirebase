@@ -1,6 +1,7 @@
 import 'package:firebase_basic_example/models/user_model.dart';
 import 'package:firebase_basic_example/screens/authenticate/authenticate.dart';
 import 'package:firebase_basic_example/screens/home/home.dart';
+import 'package:firebase_basic_example/services/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,12 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return const Authenticate();
     } else {
-      return Home();
+      return StreamBuilder<UserData>(
+          stream: FirestoreService(uid: user.uuid).userData,
+          builder: (context, snapshot) {
+            UserData? userData = snapshot.data;
+            return Home(userName: userData?.name ?? '');
+          });
     }
   }
 }

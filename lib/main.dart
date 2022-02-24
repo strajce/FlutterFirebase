@@ -8,6 +8,14 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // final database = openDatabase(
+  //   onCreate: ((db, version) {
+  //     return db.execute(
+  //         'CREATE TABEL dog (id INTEGER PRIMARY KEY, name TEXT, age INTEGER');
+  //   }),
+  //   version: 1,
+  // );
+  // openDatabse(join(await getDatabasesPath(), 'coffee_database.db'));
   runApp(const MyApp());
 }
 

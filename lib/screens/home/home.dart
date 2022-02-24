@@ -2,6 +2,7 @@ import 'package:firebase_basic_example/models/brew_model.dart';
 import 'package:firebase_basic_example/screens/home/brew_list.dart';
 import 'package:firebase_basic_example/screens/home/icon.dart';
 import 'package:firebase_basic_example/screens/home/settings_form.dart';
+import 'package:firebase_basic_example/screens/settings/settings.dart';
 import 'package:firebase_basic_example/services/auth.dart';
 import 'package:firebase_basic_example/services/firestore.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,8 @@ import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
   final AuthService _authService = AuthService();
-  Home({Key? key}) : super(key: key);
+  final String userName;
+  Home({Key? key, required this.userName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,37 +38,96 @@ class Home extends StatelessWidget {
           backgroundColor: Colors.brown[400],
           elevation: 0,
           actions: <Widget>[
-            PopupMenuButton(
-              elevation: 8,
-              icon: const Icon(Icons.more_vert),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  child: TextButton(
-                    onPressed: () => _showSettingsPanel(),
-                    child:
-                        const IconView(icon: Icons.settings, title: 'Settings'),
+            TextButton(
+              onPressed: () => _showSettingsPanel(),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.settings,
+                    color: Colors.white,
                   ),
-                  onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('settings'),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Settings',
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
                   ),
-                ),
-                PopupMenuItem(
-                  child: TextButton(
-                    onPressed: () async {
-                      await _authService.singOut();
-                    },
-                    child: const IconView(
-                      icon: Icons.person,
-                      title: 'Log out',
-                    ),
-                  ),
-                  value: 2,
-                ),
-              ],
-            )
+                ],
+              ),
+            ),
           ],
+        ),
+        drawer: Drawer(
+          backgroundColor: Colors.brown[50],
+          child: ListView(
+            padding: const EdgeInsets.all(0),
+            children: [
+              SizedBox(
+                height: 128,
+                child: DrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF8D6E63),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      top: 16,
+                    ),
+                    child: Text(
+                      userName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Builder(
+                builder: (context) => Card(
+                  color: Colors.brown[50],
+                  elevation: 2,
+                  child: ListTile(
+                    title:
+                        const IconView(icon: Icons.settings, title: 'Settings'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Settings(),
+                        ),
+                      );
+                    },
+                    onLongPress: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Settings',
+                          ),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              Card(
+                color: Colors.brown[50],
+                elevation: 2,
+                child: ListTile(
+                  title: const IconView(
+                    icon: Icons.person,
+                    title: 'Log out',
+                  ),
+                  onTap: () async {
+                    await _authService.singOut();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
         body: Container(
           decoration: const BoxDecoration(

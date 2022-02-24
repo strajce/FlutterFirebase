@@ -20,7 +20,7 @@ class IconView extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            color: Colors.brown,
+            color: Color(0xFF8D6E63),
           ),
         ),
       ],

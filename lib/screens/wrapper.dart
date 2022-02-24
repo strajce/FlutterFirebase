@@ -19,7 +19,7 @@ class Wrapper extends StatelessWidget {
           stream: FirestoreService(uid: user.uuid).userData,
           builder: (context, snapshot) {
             UserData? userData = snapshot.data;
-            return const Home(userName: userData?.name ?? '');
+            return Home(userName: userData?.name ?? '');
           });
     }
   }
